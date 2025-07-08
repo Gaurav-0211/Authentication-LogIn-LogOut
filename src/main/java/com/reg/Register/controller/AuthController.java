@@ -4,23 +4,28 @@ import com.reg.Register.dto.UserDto;
 import com.reg.Register.service.AuthService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
+
 @Slf4j
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
     @Autowired
     private AuthService authService;
+
     @PostMapping("/register")
-    public String register(@RequestBody UserDto userDto){
+    public String register(@RequestBody UserDto userDto) {
         log.info("AuthController register ");
         return authService.registerUser(userDto);
     }
 
     @PostMapping("/login")
-    public Map<String, String> login(@RequestBody UserDto userDto){
+    public Map<String, String> login(@RequestBody UserDto userDto) {
         log.info("AuthController login");
         return authService.loginUser(userDto);
     }

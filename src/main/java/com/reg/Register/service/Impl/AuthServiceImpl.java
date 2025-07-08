@@ -6,7 +6,6 @@ import com.reg.Register.repo.UserRepo;
 import com.reg.Register.service.AuthService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -72,12 +71,9 @@ public class AuthServiceImpl implements AuthService {
     }
 
     public String logoutUser(String email, String sessionId){
-        Optional<User> optionalUser = userRepo.findByEmail(email);
-        if(optionalUser.isEmpty()){
-            return "User Not Found";
-        }
-        User user = optionalUser.get();
-        if(user.getSessionId() == null || !user.getSessionId().equals(sessionId)){
+        User user = userRepo.findByEmailAndSessionId(email, sessionId).orElse(null);
+
+        if((user== null || user.getSessionId() == null) && !user.getSessionId().equals(sessionId)){
             return "Invalid session or user already logged out ";
         }
         user.setSessionId(null);
